@@ -1,0 +1,17 @@
+﻿# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Java / Maven Backend
+chat-app-backend/target/
+chat-app-backend/.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
