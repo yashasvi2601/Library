@@ -12,6 +12,9 @@ chat-app-backend/.mvn/wrapper/maven-wrapper.jar
 .idea/
 *.iml
 
+# Claude Code tooling
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
