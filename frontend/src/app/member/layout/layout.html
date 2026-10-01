@@ -1,0 +1,16 @@
+<div class="layout">
+  <aside class="sidebar">
+    <h2>Library Member</h2>
+
+    <a routerLink="/member/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/member/books" routerLinkActive="active">Books</a>
+    <a routerLink="/member/pay-fine" routerLinkActive="active">Pay Fine</a>
+    <a routerLink="/member/profile" routerLinkActive="active">Profile</a>
+
+    <button (click)="logout()">Logout</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

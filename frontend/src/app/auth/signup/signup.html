@@ -1,0 +1,36 @@
+<div class="page">
+  <form class="card" (ngSubmit)="onSignup()">
+    <h2>Member Signup</h2>
+
+    <input
+      [(ngModel)]="signupData.name"
+      name="name"
+      placeholder="Name"
+      required
+    >
+
+    <input
+      [(ngModel)]="signupData.email"
+      name="email"
+      type="email"
+      placeholder="Email"
+      required
+    >
+
+    <input
+      [(ngModel)]="signupData.password"
+      name="password"
+      type="password"
+      placeholder="Password"
+      required
+    >
+
+    <p *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <button type="submit">Signup</button>
+    
+    <div class="link">
+      <a routerLink="/login">Already have an account? Login</a>
+    </div>
+  </form>
+</div>

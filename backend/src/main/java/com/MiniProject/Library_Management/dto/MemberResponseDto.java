@@ -1,5 +1,6 @@
 package com.MiniProject.Library_Management.dto;
 
+import com.MiniProject.Library_Management.model.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +15,5 @@ public class MemberResponseDto {
     private Integer booksIssued;
     private Integer maxBooksAllowed;
     private BigDecimal pendingFineAmount;
+    private Role role;
 }

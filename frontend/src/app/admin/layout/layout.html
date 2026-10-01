@@ -1,0 +1,17 @@
+<div class="layout">
+  <aside class="sidebar">
+    <h2>Library Admin</h2>
+
+    <a *ngIf="role === 'ADMIN'" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/admin/books" routerLinkActive="active">Books</a>
+    <a routerLink="/admin/members" routerLinkActive="active">Members</a>
+    <a routerLink="/admin/issued" routerLinkActive="active">Issued</a>
+    <a routerLink="/admin/fines" routerLinkActive="active">Fines</a>
+
+    <button (click)="logout()">Logout</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

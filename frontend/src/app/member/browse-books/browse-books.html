@@ -1,0 +1,31 @@
+<div class="container">
+  <h2>Browse Books</h2>
+
+  <p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="success-banner" *ngIf="successMessage">{{ successMessage }}</p>
+
+  <table>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Genre</th>
+      <th>Available</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let book of books">
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.availableCopies }}</td>
+      <td>
+        <button
+          class="borrow-btn"
+          [disabled]="book.availableCopies < 1"
+          (click)="borrowBook(book.bookId)">
+          Borrow
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>

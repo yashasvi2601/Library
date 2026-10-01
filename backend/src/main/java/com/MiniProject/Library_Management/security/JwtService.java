@@ -2,19 +2,36 @@ package com.MiniProject.Library_Management.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
 public class JwtService {
 
-    private static final String SECRET =
-            "mysecretkeymysecretkeymysecretkey123456";
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 
-    private SecretKey getKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    private final SecretKey key;
+    private final long expirationMs;
+
+    public JwtService(
+            @Value("${app.jwt.secret:}") String configuredSecret,
+            @Value("${app.jwt.expiration-ms:86400000}") long expirationMs
+    ) {
+        if (configuredSecret == null || configuredSecret.isBlank()) {
+            log.warn("app.jwt.secret (JWT_SECRET) is not set - generating a random signing key for this run. " +
+                    "Every existing token will be invalidated on restart, and a multi-instance deployment will " +
+                    "not validate tokens issued by another instance. Set JWT_SECRET before deploying.");
+            this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        } else {
+            this.key = Keys.hmacShaKeyFor(configuredSecret.getBytes(StandardCharsets.UTF_8));
+        }
+        this.expirationMs = expirationMs;
     }
 
     public String generateToken(String email, String role) {
@@ -22,10 +39,8 @@ public class JwtService {
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)
-                )
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -38,8 +53,8 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()   // FIXED FOR YOUR VERSION
-                .setSigningKey(getKey())
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

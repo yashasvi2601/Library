@@ -4,8 +4,10 @@ import com.MiniProject.Library_Management.dto.*;
 import com.MiniProject.Library_Management.exception.ResourceNotFoundException;
 import com.MiniProject.Library_Management.model.*;
 import com.MiniProject.Library_Management.repository.*;
+import com.MiniProject.Library_Management.security.MemberAccessGuard;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,12 +26,16 @@ public class CirculationService {
     private final TransactionRepository transactionRepository;
     private final FineRepository fineRepository;
     private final ReservationRepository reservationRepository;
+    private final MemberAccessGuard memberAccessGuard;
 
     // =========================
     // CHECKOUT
     // =========================
     @Transactional
-    public TransactionResponseDto checkoutBook(CheckoutRequestDto dto) {
+    public TransactionResponseDto checkoutBook(CheckoutRequestDto dto, Authentication authentication) {
+
+        //A member may only check out for themselves; staff may check out for anyone
+        memberAccessGuard.verifyOwnerOrStaff(dto.getMemberId(), authentication);
 
         //Check if Book exists or not
         Book book = bookRepository.findById(dto.getBookId())
@@ -90,12 +96,15 @@ public class CirculationService {
     // RETURN
     // =========================
     @Transactional
-    public TransactionResponseDto returnBook(ReturnRequestDto dto) {
+    public TransactionResponseDto returnBook(ReturnRequestDto dto, Authentication authentication) {
 
         //Validate transaction
         Transaction txn = transactionRepository.findById(dto.getTxnId())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Transaction not found"));
+
+        //A member may only return their own loan; staff may act on any
+        memberAccessGuard.verifyOwnerOrStaff(txn.getMember().getMemberId(), authentication);
 
         //Validate transaction
         if (txn.getReturnedAt() != null) {
@@ -154,12 +163,15 @@ public class CirculationService {
     // RENEW
     // =========================
     @Transactional
-    public TransactionResponseDto renewBook(RenewRequestDto dto) {
+    public TransactionResponseDto renewBook(RenewRequestDto dto, Authentication authentication) {
 
         //Validate transaction
         Transaction txn = transactionRepository.findById(dto.getTxnId())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Transaction not found"));
+
+        //A member may only renew their own loan; staff may act on any
+        memberAccessGuard.verifyOwnerOrStaff(txn.getMember().getMemberId(), authentication);
 
         //Prevent renewal after return
         if (txn.getReturnedAt() != null) {
@@ -212,7 +224,11 @@ public class CirculationService {
     }
 
     @Transactional
-    public List<MemberIssuedBookDto> getBooksForMember(Long memberId) {
+    public List<MemberIssuedBookDto> getBooksForMember(Long memberId, Authentication authentication) {
+
+        //A member may only view their own loans; staff may view any
+        memberAccessGuard.verifyOwnerOrStaff(memberId, authentication);
+
         return transactionRepository.findByMemberMemberIdAndReturnedAtIsNull(memberId)
                 .stream()
                 .map(txn -> {

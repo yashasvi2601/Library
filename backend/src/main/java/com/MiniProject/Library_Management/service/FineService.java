@@ -6,7 +6,9 @@ import com.MiniProject.Library_Management.exception.ResourceNotFoundException;
 import com.MiniProject.Library_Management.model.*;
 import com.MiniProject.Library_Management.repository.FineRepository;
 import com.MiniProject.Library_Management.repository.ReservationRepository;
+import com.MiniProject.Library_Management.security.MemberAccessGuard;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +21,19 @@ public class FineService {
 
     private final FineRepository fineRepository;
     private final ReservationRepository reservationRepository;
+    private final MemberAccessGuard memberAccessGuard;
 
     @Transactional
-    public Fine payFine(PayFineRequestDto dto) {
+    public FineTableResponseDto payFine(PayFineRequestDto dto, Authentication authentication) {
 
         Fine fine = fineRepository.findByFineIdAndPaidFalse(dto.getFineId())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Unpaid fine not found with id: " + dto.getFineId()
                         ));
+
+        //A member may only pay their own fine; staff may act on any
+        memberAccessGuard.verifyOwnerOrStaff(fine.getMember().getMemberId(), authentication);
 
         // step 1 -> mark paid
         fine.setPaid(true);
@@ -53,8 +59,19 @@ public class FineService {
             copy.setStatus(CopyStatus.RESERVED);
         }
 
-        return fineRepository.save(fine);
+        return mapFine(fineRepository.save(fine));
     }
+
+    @Transactional(readOnly = true)
+    public List<FineTableResponseDto> getMyPendingFines(Authentication authentication) {
+        Member member = memberAccessGuard.currentMember(authentication);
+
+        return fineRepository.findByMemberAndPaidFalse(member)
+                .stream()
+                .map(this::mapFine)
+                .toList();
+    }
+
     @Transactional(readOnly = true)
     public List<FineTableResponseDto> getPendingFines() {
         return fineRepository.findByPaidFalse()

@@ -1,0 +1,31 @@
+<div class="page">
+  <form class="card" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
+    <h2>Library Login</h2>
+
+    <input
+      type="email"
+      [(ngModel)]="loginData.email"
+      name="email"
+      placeholder="Email"
+    />
+
+    <input
+      type="password"
+      [(ngModel)]="loginData.password"
+      name="password"
+      placeholder="Password"
+    />
+
+    <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <button type="submit">Login</button>
+
+    <button
+      type="button"
+      class="signup-btn"
+      routerLink="/signup"
+    >
+      Create new account
+    </button>
+  </form>
+</div>

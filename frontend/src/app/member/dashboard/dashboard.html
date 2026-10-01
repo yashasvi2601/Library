@@ -1,0 +1,45 @@
+<p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+<div class="cards">
+  <div class="card">
+    <h3>Total Issued Books</h3>
+    <p>{{ stats.totalIssued }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Fine</h3>
+    <p>Rs. {{ stats.totalFine }}</p>
+  </div>
+
+  <div class="card clickable" routerLink="/member/pay-fine">
+    <h3>Pay Fine</h3>
+    <p>Go</p>
+  </div>
+</div>
+
+<table class="books-table">
+  <tr>
+    <th>Book Id</th>
+    <th>Name of Book</th>
+    <th>Issued Date</th>
+    <th>Time Left</th>
+    <th>Fine</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let book of books">
+    <td>{{ book.bookId }}</td>
+    <td>{{ book.title }}</td>
+    <td>{{ book.issuedAt | date:'short' }}</td>
+    <td>{{ book.daysLeft }} days</td>
+    <td> {{ book.currentFine }}</td>
+    <td>
+      <button class="return-btn" (click)="returnBook(book.txnId)">
+        Return
+      </button>
+      <button class="renew-btn" (click)="renewBook(book.txnId)">
+        Renew
+      </button>
+    </td>
+  </tr>
+</table>

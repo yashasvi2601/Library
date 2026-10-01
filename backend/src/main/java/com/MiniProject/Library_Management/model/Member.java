@@ -28,4 +28,9 @@ public class Member {
 
     @Builder.Default
     private Integer maxBooksAllowed = 5;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private Role role = Role.MEMBER;
 }

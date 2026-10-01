@@ -4,6 +4,7 @@ import com.MiniProject.Library_Management.dto.MemberRequestDto;
 import com.MiniProject.Library_Management.dto.MemberResponseDto;
 import com.MiniProject.Library_Management.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +18,13 @@ public class MemberController {
 
     @PostMapping
     public MemberResponseDto createMember(
-            @RequestBody MemberRequestDto dto) {
-        return memberService.createMember(dto);
+            @RequestBody MemberRequestDto dto, Authentication authentication) {
+        return memberService.createMember(dto, authentication);
+    }
+
+    @GetMapping("/me")
+    public MemberResponseDto getMyProfile(Authentication authentication) {
+        return memberService.getMyProfile(authentication);
     }
 
     @GetMapping("/{id}")
@@ -35,8 +41,9 @@ public class MemberController {
     @PutMapping("/{id}")
     public MemberResponseDto updateMember(
             @PathVariable Long id,
-            @RequestBody MemberRequestDto dto) {
-        return memberService.updateMember(id, dto);
+            @RequestBody MemberRequestDto dto,
+            Authentication authentication) {
+        return memberService.updateMember(id, dto, authentication);
     }
 
     @DeleteMapping("/{id}")

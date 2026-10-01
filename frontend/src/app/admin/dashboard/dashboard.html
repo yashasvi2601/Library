@@ -1,0 +1,23 @@
+<p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+<div class="cards">
+  <div class="card" routerLink="/admin/books">
+    <h3>Total Books</h3>
+    <p>{{ stats.totalBooks }}</p>
+  </div>
+
+  <div class="card" routerLink="/admin/members">
+    <h3>Members</h3>
+    <p>{{ stats.totalMembers }}</p>
+  </div>
+
+  <div class="card" routerLink="/admin/issued">
+    <h3>Issued</h3>
+    <p>{{ stats.issuedBooks }}</p>
+  </div>
+
+  <div class="card" routerLink="/admin/fines">
+    <h3>Fines</h3>
+    <p>{{ stats.totalFines }}</p>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="container">
+  <p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <table>
+    <tr>
+      <th>Member ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Total Books Issued</th>
+      <th>Total Fines Left</th>
+      <th>Actions</th>
+    </tr>
+
+    <tr *ngFor="let member of members">
+      <td>{{ member.memberId }}</td>
+      <td>{{ member.name }}</td>
+      <td>{{ member.email }}</td>
+      <td>{{ member.booksIssued }}</td>
+      <td>₹ {{ member.pendingFineAmount }}</td>
+      <td>
+        <button class="edit-btn" (click)="openEditModal(member)">
+          Edit
+        </button>
+        <button class="delete-btn" (click)="deleteMember(member.memberId)">
+          Delete
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-card">
+    <h3>Edit Member</h3>
+
+    <input [(ngModel)]="memberForm.name" placeholder="Enter name">
+    <input [(ngModel)]="memberForm.email" placeholder="Enter email">
+    <input
+      type="number"
+      [(ngModel)]="memberForm.maxBooksAllowed"
+      placeholder="Max books allowed"
+    >
+
+    <div class="modal-actions">
+      <button (click)="updateMember()">Save</button>
+      <button (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -2,9 +2,9 @@ package com.MiniProject.Library_Management.controller;
 
 import com.MiniProject.Library_Management.dto.FineTableResponseDto;
 import com.MiniProject.Library_Management.dto.PayFineRequestDto;
-import com.MiniProject.Library_Management.model.Fine;
 import com.MiniProject.Library_Management.service.FineService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +17,15 @@ public class FineController {
     private final FineService fineService;
 
     @PostMapping("/pay")
-    public Fine payFine(@RequestBody PayFineRequestDto dto) {
-        return fineService.payFine(dto);
+    public FineTableResponseDto payFine(@RequestBody PayFineRequestDto dto, Authentication authentication) {
+        return fineService.payFine(dto, authentication);
     }
+
+    @GetMapping("/my")
+    public List<FineTableResponseDto> getMyPendingFines(Authentication authentication) {
+        return fineService.getMyPendingFines(authentication);
+    }
+
     @GetMapping("/pending")
     public List<FineTableResponseDto> getPendingFines() {
         return fineService.getPendingFines();

@@ -1,0 +1,24 @@
+<div class="container">
+  <h2>Pay Fine</h2>
+
+  <p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="success-banner" *ngIf="successMessage">{{ successMessage }}</p>
+
+  <table *ngIf="fines.length; else noFines">
+    <tr>
+      <th>Fine Amount</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let fine of fines">
+      <td>₹ {{ fine.amount }}</td>
+      <td>
+        <button class="pay-btn" (click)="payFine(fine.fineId)">Pay</button>
+      </td>
+    </tr>
+  </table>
+
+  <ng-template #noFines>
+    <p class="empty-state">You have no pending fines.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>My Profile</h2>
+
+  <p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="profile-card" *ngIf="profile">
+    <div class="avatar">{{ profile.name?.charAt(0) }}</div>
+
+    <div class="profile-row">
+      <span class="label">Name</span>
+      <span class="value">{{ profile.name }}</span>
+    </div>
+    <div class="profile-row">
+      <span class="label">Email</span>
+      <span class="value">{{ profile.email }}</span>
+    </div>
+    <div class="profile-row">
+      <span class="label">Books Issued</span>
+      <span class="value">{{ profile.booksIssued }} / {{ profile.maxBooksAllowed }}</span>
+    </div>
+    <div class="profile-row">
+      <span class="label">Pending Fine</span>
+      <span class="value fine">₹ {{ profile.pendingFineAmount }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: white;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 28px;
+  margin-top: 12px;
+  color: #2563eb;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.books-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.books-table th,
+.books-table td {
+  border: 1px solid #d1d5db;
+  padding: 14px;
+  text-align: left;
+  color: #111827;
+}
+
+.books-table th {
+  background: #2563eb;
+  color: white;
+}
+
+.books-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+button {
+  padding: 8px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.return-btn {
+  background: #dc2626;
+}
+
+.renew-btn {
+  background: #16a34a;
+}

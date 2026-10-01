@@ -1,0 +1,59 @@
+<div class="container">
+  <p class="error-banner" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="tabs">
+    <button
+      [class.active]="activeTab === 'pending'"
+      (click)="switchTab('pending')">
+      Pending Fines
+    </button>
+
+    <button
+      [class.active]="activeTab === 'history'"
+      (click)="switchTab('history')">
+      Fine History
+    </button>
+  </div>
+
+  <!-- Pending -->
+  <table *ngIf="activeTab === 'pending'">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Fine Pending</th>
+      <th>Actions</th>
+    </tr>
+
+    <tr *ngFor="let fine of pendingFines">
+      <td>{{ fine.memberName }}</td>
+      <td>{{ fine.email }}</td>
+      <td>₹ {{ fine.amount }}</td>
+      <td>
+        <button class="clear-btn" (click)="clearFine(fine.fineId)">
+          Clear Fine
+        </button>
+        <button class="delete-btn" (click)="deleteFine(fine.fineId)">
+          Delete Fine
+        </button>
+      </td>
+    </tr>
+  </table>
+
+  <!-- History -->
+  <table *ngIf="activeTab === 'history'">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Fine Paid</th>
+      <th>Paid At</th>
+    </tr>
+
+    <tr *ngFor="let fine of historyFines">
+      <td>{{ fine.memberName }}</td>
+      <td>{{ fine.email }}</td>
+      <td>₹ {{ fine.amount }}</td>
+      <td>{{ fine.paidAt }}</td>
+    </tr>
+  </table>
+
+</div>
