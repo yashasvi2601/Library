@@ -17,6 +17,20 @@ A full-stack library management system with role-based access control, book circ
 - **Fines** — pending/history views for staff, self-service "my fines" + pay flow for members.
 - **Admin dashboard** — totals for books, members, issued loans, and fines.
 
+## Demo login credentials
+
+Seeded automatically on first run against an empty database (see `AdminSeeder`/`DataSeeder` below):
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@library.com` | set via `ADMIN_PASSWORD` (see Configuration below), or check the startup log for the generated one-time password |
+| Librarian | `librarian@library.com` | `librarian123` |
+| Member | `arjun.mehta@example.com` | `member123` |
+| Member | `priya.nair@example.com` | `member123` |
+| Member | `sofia.rossi@example.com` | `member123` |
+| Member | `daniel.kim@example.com` | `member123` |
+| Member | `omar.farouk@example.com` | `member123` |
+
 ## Project structure
 
 ```
@@ -52,14 +66,7 @@ On first run against an empty database, two seeders run automatically:
 - **`AdminSeeder`** creates the admin account (`ADMIN_EMAIL`/`ADMIN_PASSWORD`, or the generated defaults above).
 - **`DataSeeder`** populates sample data (only when the `books` table is empty): a dozen books with copies across several genres, a sample `LIBRARIAN` account, five sample `MEMBER` accounts, and a few sample loans (including one overdue loan with a pending fine), so the app isn't empty on first login.
 
-  | Role | Email | Password |
-  |---|---|---|
-  | Librarian | `librarian@library.com` | `librarian123` |
-  | Member | `arjun.mehta@example.com` | `member123` |
-  | Member | `priya.nair@example.com` | `member123` |
-  | Member | `sofia.rossi@example.com` | `member123` |
-  | Member | `daniel.kim@example.com` | `member123` |
-  | Member | `omar.farouk@example.com` | `member123` |
+See [Demo login credentials](#demo-login-credentials) above for the accounts this creates.
 
 ### Security model
 
